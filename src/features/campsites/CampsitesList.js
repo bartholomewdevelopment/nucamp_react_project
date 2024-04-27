@@ -1,36 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { CAMPSITES } from '../../app/shared/CAMPSITES';
-import { useSelector } from 'react-redux'; 
-
-const initialState = {
-    campsitesArray: CAMPSITES
-};
-
-const campsitesSlice = createSlice({
-    name: 'campsites',
-    initialState
-});
-
-export const campsitesReducer = campsitesSlice.reducer;
-
-export const selectAllCampsites = (state) => {
-    return state.campsites.campsitesArray;
-};
-
-export const selectCampsiteById = (id) => (state) => {
-    return state.campsites.campsitesArray.find(
-        (campsite) => campsite.id === parseInt(id)
-    );
-};
-
-export const selectFeaturedCampsite = (state) => {
-    return state.campsites.campsitesArray.find((campsite) => campsite.featured);
-};
+import { useSelector } from 'react-redux';
+import { Col, Row } from 'reactstrap';
+import CampsiteCard from './CampsiteCard';
+import { selectAllCampsites } from './campsitesSlice';
 
 const CampsitesList = () => {
     const campsites = useSelector(selectAllCampsites);
-    console.log('campsites:', campsites); 
-    // more code to come
+    console.log('campsites:', campsites);
+
+    return (
+        <Row className='ms-auto'>
+            {campsites.map((campsite) => {
+                return (
+                    <Col md='5' className='m-4' key={campsite.id}>
+                        <CampsiteCard campsite={campsite} />
+                    </Col>
+                );
+            })}
+        </Row>
+    );
 };
 
 export default CampsitesList;
